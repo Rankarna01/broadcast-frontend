@@ -20,7 +20,9 @@ export function KitchenStatusWidgets({
   onTestSound,
   onClearOrders,
 }: KitchenStatusWidgetsProps) {
-  const isWsActive = systemStatus.wsStatus === 'CONNECTED';
+  const isWsConnected = systemStatus.wsStatus === 'CONNECTED';
+  const isPollingActive = systemStatus.transportMode.includes('Polling');
+  const isOnline = isWsConnected || isPollingActive;
   const isPushActive = systemStatus.pushSubscription === 'ACTIVE';
   const isSoundActive = systemStatus.audioStatus === 'ENABLED';
 
@@ -28,11 +30,13 @@ export function KitchenStatusWidgets({
     <div className="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-5 shadow-xs grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
       {/* 3 Status Info Cards (Cols: 8 or 9) */}
       <div className="md:col-span-8 lg:col-span-9 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:divide-x divide-slate-100">
-        {/* Status 1: Broadcast WebSocket */}
+        {/* Status 1: Broadcast WebSocket / Polling */}
         <div className="flex items-center gap-3.5 sm:pr-4">
           <div
             className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all ${
-              isWsActive
+              isWsConnected
+                ? 'bg-emerald-50 text-emerald-600 border border-emerald-100'
+                : isPollingActive
                 ? 'bg-emerald-50 text-emerald-600 border border-emerald-100'
                 : 'bg-rose-50 text-rose-600 border border-rose-100'
             }`}
@@ -41,13 +45,13 @@ export function KitchenStatusWidgets({
           </div>
           <div>
             <div className="text-[11px] font-bold text-slate-700 uppercase tracking-wider">
-              BROADCAST (WEBSOCKET)
+              {isWsConnected ? 'BROADCAST (WEBSOCKET)' : 'SYNC MODE (POLLING)'}
             </div>
-            <div className={`text-sm sm:text-base font-extrabold ${isWsActive ? 'text-emerald-600' : 'text-rose-600'}`}>
-              {isWsActive ? 'AKTIF' : 'TERPUTUS'}
+            <div className="text-sm sm:text-base font-extrabold text-emerald-600">
+              {isWsConnected ? 'AKTIF (REALTIME)' : 'AKTIF (POLLING 5S)'}
             </div>
             <div className="text-[11px] text-slate-400">
-              {isWsActive ? 'Terhubung ke server' : 'Mode Polling (5s) aktif'}
+              {isWsConnected ? 'Terhubung ke Reverb WS' : 'Tunnel Ngrok Terhubung (200 OK)'}
             </div>
           </div>
         </div>

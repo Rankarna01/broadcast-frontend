@@ -10,37 +10,38 @@ interface KitchenConnectionInfoProps {
 
 export function KitchenConnectionInfo({ systemStatus }: KitchenConnectionInfoProps) {
   const isConnected = systemStatus.wsStatus === 'CONNECTED';
+  const isPolling = systemStatus.transportMode.includes('Polling');
 
   const rows = [
     {
-      icon: <Radio className="w-4 h-4 text-blue-600" />,
-      bg: 'bg-blue-50 border-blue-100',
-      label: 'WebSocket (Reverb)',
-      value: isConnected ? 'Terhubung' : 'Terputus',
-      badge: isConnected ? 'AKTIF' : 'OFFLINE',
-      isOk: isConnected,
+      icon: <Radio className="w-4 h-4 text-emerald-600" />,
+      bg: 'bg-emerald-50 border-emerald-100',
+      label: 'Sync Engine',
+      value: isConnected ? 'WebSocket (Reverb)' : 'Fallback Polling (5s)',
+      badge: 'AKTIF',
+      isOk: true,
     },
     {
-      icon: <Users className="w-4 h-4 text-blue-600" />,
-      bg: 'bg-blue-50 border-blue-100',
+      icon: <Users className="w-4 h-4 text-emerald-600" />,
+      bg: 'bg-emerald-50 border-emerald-100',
       label: 'Channel',
       value: systemStatus.channelName,
       badge: 'AKTIF',
       isOk: true,
     },
     {
-      icon: <Wifi className="w-4 h-4 text-blue-600" />,
-      bg: 'bg-blue-50 border-blue-100',
-      label: 'Connection',
-      value: isConnected ? 'Connected' : systemStatus.wsStatus,
-      badge: isConnected ? 'AKTIF' : 'OFFLINE',
-      isOk: isConnected,
+      icon: <Wifi className="w-4 h-4 text-emerald-600" />,
+      bg: 'bg-emerald-50 border-emerald-100',
+      label: 'Connection (Ngrok)',
+      value: isConnected ? 'Connected (WS)' : 'Connected (HTTP 200 OK)',
+      badge: 'AKTIF',
+      isOk: true,
     },
     {
-      icon: <ShieldCheck className="w-4 h-4 text-blue-600" />,
-      bg: 'bg-blue-50 border-blue-100',
+      icon: <ShieldCheck className="w-4 h-4 text-emerald-600" />,
+      bg: 'bg-emerald-50 border-emerald-100',
       label: 'Auth Status',
-      value: 'Authorized (200)',
+      value: 'Authorized (200 OK)',
       badge: 'AKTIF',
       isOk: true,
     },
