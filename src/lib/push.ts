@@ -44,8 +44,22 @@ export async function checkExistingPushSubscription(): Promise<boolean> {
 export async function subscribeToWebPush(
   outletId: number
 ): Promise<{ success: boolean; message: string }> {
-  if (typeof window === 'undefined' || !('PushManager' in window)) {
-    return { success: false, message: 'Push notifications are not supported in this browser.' };
+  if (typeof window === 'undefined') {
+    return { success: false, message: 'Browser environment is required.' };
+  }
+
+  // Detect iOS Safari without PWA Add-to-Home-Screen
+  const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone === true;
+
+  if (!('PushManager' in window)) {
+    if (isIos && !isStandalone) {
+      return {
+        success: false,
+        message: 'Khusus iPhone (iOS): Tekan tombol Bagikan (Share ⬆️) di bawah Safari ➔ "Tambahkan ke Layar Utama" (Add to Home Screen). Lalu buka dari ikon Layar Utama untuk mengaktifkan notifikasi.',
+      };
+    }
+    return { success: false, message: 'Push notifications are not supported in this browser tab.' };
   }
 
   const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;

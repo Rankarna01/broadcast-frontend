@@ -12,6 +12,12 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: 'Kitchen Display • Delivery Broadcast System',
   description: 'Real-time kitchen order broadcasting and live display system',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Kitchen Display',
+  },
 };
 
 export default function RootLayout({
@@ -21,6 +27,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id" className={`${montserrat.variable} font-sans h-full antialiased`}>
+      <head>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <link rel="apple-touch-icon" href="/globe.svg" />
+      </head>
       <body className="min-h-full flex flex-col font-sans bg-[#f8fafc] text-slate-900 selection:bg-emerald-500 selection:text-white">
         {children}
       </body>
