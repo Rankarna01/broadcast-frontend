@@ -90,6 +90,7 @@ export async function subscribeToWebPush(
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
+        'ngrok-skip-browser-warning': 'true',
       },
       body: JSON.stringify({
         endpoint: subscription.endpoint,

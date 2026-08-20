@@ -31,6 +31,7 @@ export function initEcho(token?: string): Echo<any> {
     auth: {
       headers: {
         Accept: 'application/json',
+        'ngrok-skip-browser-warning': 'true',
         Authorization: token ? `Bearer ${token}` : '',
       },
     },

@@ -43,7 +43,12 @@ export default function CustomerPage() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
   useEffect(() => {
-    fetch(`${apiUrl}/api/outlets`)
+    fetch(`${apiUrl}/api/outlets`, {
+      headers: {
+        Accept: 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+    })
       .then((res) => res.json())
       .then((res) => {
         if (res.success && res.data && res.data.length > 0) {
@@ -64,6 +69,7 @@ export default function CustomerPage() {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
+          'ngrok-skip-browser-warning': 'true',
         },
         body: JSON.stringify({
           outlet_id: selectedOutletId,

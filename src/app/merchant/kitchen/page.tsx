@@ -83,7 +83,10 @@ export default function KitchenDisplayPage() {
   const fetchPendingOrders = useCallback(async (outletId: number) => {
     try {
       const res = await fetch(`${apiUrl}/api/order-requests/pending?outlet_id=${outletId}`, {
-        headers: { Accept: 'application/json' },
+        headers: {
+          Accept: 'application/json',
+          'ngrok-skip-browser-warning': 'true',
+        },
       });
 
       if (!res.ok) return;
@@ -269,7 +272,10 @@ export default function KitchenDisplayPage() {
     try {
       const res = await fetch(`${apiUrl}/api/order-requests/clear`, {
         method: 'DELETE',
-        headers: { Accept: 'application/json' },
+        headers: {
+          Accept: 'application/json',
+          'ngrok-skip-browser-warning': 'true',
+        },
       });
       if (res.ok) {
         setOrders([]);
